@@ -33,13 +33,19 @@ const responses = {
   "foreign languages": "I speak English and French."
 };
 
+// βοηθητική συνάρτηση για πιο «έξυπνη» ανάλυση
+function normalize(text) {
+  return text.toLowerCase().replace(/[^a-zA-Z\s]/g, "").trim();
+}
 
 app.post('/chat', (req, res) => {
   const { prompt } = req.body;
+  const cleanedPrompt = normalize(prompt);
+
   let response = "Sorry, I don't understand.";
 
   for (let keyword in responses) {
-    if (prompt.toLowerCase().includes(keyword)) {
+    if (cleanedPrompt.includes(normalize(keyword))) {
       response = responses[keyword];
       break;
     }

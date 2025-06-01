@@ -8,27 +8,27 @@ function App() {
   const handleSend = async () => {
     if (prompt.trim() === '') return;
 
-    // Βάζουμε πρώτα το μήνυμα του χρήστη
+    // Προσθέτουμε πρώτα το μήνυμα του χρήστη
     setMessages(prev => [...prev, { sender: 'user', text: prompt }]);
+
+    const userMessage = prompt; // κρατάμε το prompt προσωρινά
+    setPrompt(''); // καθαρίζουμε το input
 
     try {
       const response = await fetch('http://localhost:5000/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt: userMessage }),
       });
 
       const data = await response.json();
 
-      // Προσθέτουμε την απάντηση του backend
       setMessages(prev => [...prev, { sender: 'bot', text: data.answer }]);
 
     } catch (error) {
       console.error('Error:', error);
       setMessages(prev => [...prev, { sender: 'bot', text: 'Something went wrong!' }]);
     }
-
-    setPrompt('');
   };
 
   return (
@@ -53,6 +53,7 @@ function App() {
             onChange={(e) => setPrompt(e.target.value)}
             className="flex-grow border p-2 rounded-l"
             placeholder="Type your question..."
+            onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           />
           <button onClick={handleSend} className="bg-blue-500 text-white px-4 rounded-r">
             Send
@@ -64,5 +65,6 @@ function App() {
 }
 
 export default App
+
 
 
