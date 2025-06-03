@@ -8,11 +8,10 @@ function App() {
   const handleSend = async () => {
     if (prompt.trim() === '') return;
 
-    // Προσθέτουμε πρώτα το μήνυμα του χρήστη
     setMessages(prev => [...prev, { sender: 'user', text: prompt }]);
 
-    const userMessage = prompt; // κρατάμε το prompt προσωρινά
-    setPrompt(''); // καθαρίζουμε το input
+    const userMessage = prompt; 
+    setPrompt(''); 
 
     try {
       const response = await fetch('http://localhost:5000/chat', {
@@ -23,7 +22,7 @@ function App() {
 
       const data = await response.json();
 
-      setMessages(prev => [...prev, { sender: 'bot', text: data.answer }]);
+      setMessages(prev => [...prev, { sender: 'bot', text: data.reply }]);
 
     } catch (error) {
       console.error('Error:', error);
