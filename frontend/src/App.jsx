@@ -1,48 +1,48 @@
-import { useState } from 'react'
-import './App.css'
-import Message from './components/Message';
-import { PredefinedQuestion } from './components/PredefinedQuestion';
-import { UserInput } from './components/UserInput';
-import { PREDEFINED_QUESTIONS } from './data/predefined-questions.data'
+import { useState } from "react";
+import "./App.css";
+import Message from "./components/Message";
+import { PredefinedQuestion } from "./components/PredefinedQuestion";
+import { UserInput } from "./components/UserInput";
+import { PREDEFINED_QUESTIONS } from "./data/predefined-questions.data";
 
 const SERVER_URI = import.meta.env.VITE_API_URL;
 
 function App() {
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useState([]);
 
   const handleSend = async (text) => {
     const questionToSend = text || prompt;
 
     if (!questionToSend.trim()) return;
-    setMessages(prev => [...prev, { sender: 'user', text: questionToSend }]);
-
+    setMessages((prev) => [...prev, { sender: "user", text: questionToSend }]);
 
     try {
       const response = await fetch(`${SERVER_URI}/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: questionToSend }),
       });
 
       const data = await response.json();
 
-      setMessages(prev => [...prev, { sender: 'bot', text: data.reply }]);
-
-      // Scroll the messages container to bottom
-      setTimeout(() => {
-        const messagesContainer = document.querySelector('.messages-container');
-        if (messagesContainer) {
-          messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-      }, 10);
-
+      setMessages((prev) => [...prev, { sender: "bot", text: data.reply }]);
     } catch (error) {
-      console.warn('Error:', error);
-      setMessages(prev => [...prev, { sender: 'bot', text: 'Something went wrong!' }]);
+      console.warn("Error:", error);
+      setMessages((prev) => [
+        ...prev,
+        { sender: "bot", text: "Something went wrong!" },
+      ]);
     }
-    setPrompt('');
+    setPrompt("");
 
+    // Scroll the messages container to bottom
+    setTimeout(() => {
+      const messagesContainer = document.querySelector(".messages-container");
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    }, 10);
   };
 
   return (
@@ -60,17 +60,18 @@ function App() {
           <UserInput onChange={setPrompt} onClick={handleSend} value={prompt} />
         </div>
 
-        <div className="mt-4 grid grid-cols-2 gap-2">
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
           {PREDEFINED_QUESTIONS.map((question, index) => (
-            <PredefinedQuestion key={index} question={question} onClick={() => handleSend(question)} />
+            <PredefinedQuestion
+              key={index}
+              question={question}
+              onClick={() => handleSend(question)}
+            />
           ))}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default App
-
-
-
+export default App;
