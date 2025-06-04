@@ -48,7 +48,7 @@ If there is a different kind of error (e.g. network issues), it will display a "
    ```
 4. Start the server:
    ```bash
-   npm start
+   npm run dev
    ```
    The backend will be available at `http://localhost:3000`
 
