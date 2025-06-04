@@ -55,11 +55,10 @@ If there is a different kind of error (e.g. network issues), it will display a "
 ## Tech Stack
 
 ### Frontend
-- React 19
-- Vite 6
-- TailwindCSS 3
-- ESLint
-- PostCSS
+- React 
+- Vite 
+- TailwindCSS 
+
 
 ### Backend
 - Node.js
